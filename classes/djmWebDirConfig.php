@@ -18,7 +18,13 @@ class djmWebDirConfig
     {
         $root = realpath($_SERVER['DOCUMENT_ROOT']);
         $rootLen = strlen($root);
-        $dir = realpath(dirname($_SERVER['SCRIPT_FILENAME']));
+        
+        if (defined('WEBDIRCONFIG_FILENAME')) {
+            $dir = realpath(dirname(WEBDIRCONFIG_FILENAME));
+        } else {
+            $dir = realpath(dirname($_SERVER['SCRIPT_FILENAME']));
+        }
+        
         $files = array();
         while (substr($dir, 0, $rootLen) == $root) {
             if (is_file("$dir/.config.php")) {
