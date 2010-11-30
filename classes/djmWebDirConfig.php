@@ -20,9 +20,15 @@ class djmWebDirConfig
         $rootLen = strlen($root);
         
         if (defined('WEBDIRCONFIG_FILENAME')) {
-            $dir = realpath(dirname(WEBDIRCONFIG_FILENAME));
+            $dir = dirname(WEBDIRCONFIG_FILENAME);
         } else {
-            $dir = realpath(dirname($_SERVER['SCRIPT_FILENAME']));
+            $dir = rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $_SERVER['REQUEST_URI'];
+            if (($pos = strpos($dir, '?')) !== false) {
+                $dir = substr($dir, 0, $pos - 1);
+            }
+            if (substr($dir, -1) != '/' || is_file($dir)) {
+                $dir = dirname($dir);
+            }
         }
         
         $files = array();
@@ -30,7 +36,7 @@ class djmWebDirConfig
             if (is_file("$dir/.config.php")) {
                 $files[] = "$dir/.config.php";
             }
-            $dir = realpath(dirname($dir));
+            $dir = dirname($dir);
         }
         return array_reverse($files);
     }
