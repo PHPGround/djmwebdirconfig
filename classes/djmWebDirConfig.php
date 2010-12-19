@@ -16,13 +16,13 @@ class djmWebDirConfig
      */
     public static function getFiles()
     {
-        $root = realpath($_SERVER['DOCUMENT_ROOT']);
+        $root = rtrim(realpath($_SERVER['DOCUMENT_ROOT']), '/');
         $rootLen = strlen($root);
         
         if (defined('WEBDIRCONFIG_FILENAME')) {
             $dir = dirname(WEBDIRCONFIG_FILENAME);
         } else {
-            $dir = rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $_SERVER['REQUEST_URI'];
+            $dir = $root . $_SERVER['REQUEST_URI'];
             if (($pos = strpos($dir, '?')) !== false) {
                 $dir = substr($dir, 0, $pos - 1);
             }
