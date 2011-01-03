@@ -24,7 +24,7 @@ class djmWebDirConfig
         } else {
             $dir = $root . $_SERVER['REQUEST_URI'];
             if (($pos = strpos($dir, '?')) !== false) {
-                $dir = substr($dir, 0, $pos - 1);
+                $dir = substr($dir, 0, $pos);
             }
             if (substr($dir, -1) != '/' || is_file($dir)) {
                 $dir = dirname($dir);
